@@ -1,7 +1,13 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 
-admin.initializeApp();
+var serviceAccount = require("./socialape-85aee-firebase-adminsdk-e2ul1-5bc1451084.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://socialape-85aee.firebaseio.com"
+});
+
 const express = require("express");
 const app = express();
 
@@ -13,17 +19,22 @@ app.get("/screams", (req, res) => {
     .then(data => {
       let screams = [];
       data.forEach(doc => {
-        screams.push(doc.data());
+        screams.push({
+          screamId: doc.id,
+          body: doc.data().body,
+          userHandle: doc.data().userHandle,
+          createdAt: doc.data().createdAt
+        });
       });
-      return response.json(screams);
+      return res.json(screams);
     })
     .catch(err => console.error(err));
 });
 
 app.post("/scream", (req, res) => {
   const newScream = {
-    body: request.body.body,
-    userHandle: request.body.userHandle,
+    body: req.body.body,
+    userHandle: req.body.userHandle,
     createdAt: admin.firestore.Timestamp.fromDate(new Date())
   };
   admin
@@ -31,10 +42,10 @@ app.post("/scream", (req, res) => {
     .collection("screams")
     .add(newScream)
     .then(doc => {
-      response.json({ message: `document ${doc.id} created succesfully` });
+      res.json({ message: `document ${doc.id} created succesfully` });
     })
     .catch(err => {
-      response.status(500).json({ error: "something went wrong" });
+      res.status(500).json({ error: "something went wrong" });
       console.log(err);
     });
 });
