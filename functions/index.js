@@ -81,10 +81,16 @@ app.post("/signup", (req, res) => {
   };
 
   if (isEmpty(newUser.email)) {
-    errors.email = "email must be not empty";
+    errors.email = "Email must be not empty";
   } else if (!isEmail(newUser.email)) {
-    errors.email = "must be a valid email adress";
+    errors.email = "Must be a valid email adress";
   }
+  if (isEmpty(newUser.password)) errors.password = "Must not be empty";
+  if (newUser.password !== newUser.confirmPassword)
+    errors.confirmPassword = "Passwords must match";
+  if (isEmpty(newUser.handle)) errors.handle = "Must not be empty";
+  if (Object.keys(errors).length > 0) return res.status(400).json(errors);
+
   // data validation
   let token, userId;
   db.doc(`/users/${newUser.handle}`)
