@@ -153,7 +153,11 @@ app.post("/login", (req, res) => {
     })
     .catch(err => {
       console.error(err);
-      return res.status(500).json({ error: err.code });
+      if (err.code === "auth/worng-password") {
+        return res
+          .status(403)
+          .json({ general: "Wrong credentials, try again" });
+      } else return res.status(500).json({ error: err.code });
     });
 });
 
