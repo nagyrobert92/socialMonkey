@@ -4,7 +4,7 @@ var serviceAccount = require("../socialape-85aee-firebase-adminsdk-e2ul1-5bc1451
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://socialape-85aee.firebaseio.com"
+  storageBucket: "socialape-85aee.appspot.com"
 });
 
 const db = admin.firestore();
