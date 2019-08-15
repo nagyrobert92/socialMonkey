@@ -30,8 +30,8 @@ exports.validateSignupData = data => {
 exports.validateLoginData = data => {
   let errors = {};
 
-  if (isEmpty(user.email)) errors.email = "Must be not empty";
-  if (isEmpty(user.password)) errors.password = "Must be not empty";
+  if (isEmpty(data.email)) errors.email = "Must be not empty";
+  if (isEmpty(data.password)) errors.password = "Must be not empty";
 
   return {
     errors,
