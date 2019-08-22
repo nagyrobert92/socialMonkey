@@ -8,7 +8,8 @@ const {
   signup,
   login,
   uploadImage,
-  addUserDetails
+  addUserDetails,
+  getAuthenticatedUser
 } = require("./handlers/users");
 
 //Scream routes
@@ -16,6 +17,7 @@ app.get("/screams", getAllScreams);
 app.post("/scream", FBAuth, postOneScream);
 app.post("/user/image", FBAuth, uploadImage);
 app.post("/user", FBAuth, addUserDetails);
+app.get("/user", FBAuth, getAuthenticatedUser);
 
 //users routes
 app.post("/signup", signup);
